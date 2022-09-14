@@ -11,7 +11,7 @@ class player():
 		# used to keep track of which count the current animation is on
 		self.animationInt = 0
 
-		self.idleImg = pygame.image.load('imgs/w/knight.png')
+		self.idleImg = pygame.image.load('imgs/knight.png')
 		# holds current image, default is the idle
 		self.img = self.idleImg
 
@@ -24,9 +24,14 @@ class player():
 
 		# loading in walking animation
 		self.walkImg = []
-		for i in range(1, 7):
-			self.loadImg = pygame.image.load('imgs/w/Walk/walk' + str(i) + '.png')
+		for i in range(1, 7): # 6 frames
+			self.loadImg = pygame.image.load('imgs/walk/walk' + str(i) + '.png')
 			self.walkImg.append(self.loadImg)
+
+		self.atkImg = []
+		for i in range(1, 7):
+			self.loadImg = pygame.image.load('imgs/attk/walk_attack' + str(i) + '.png')
+			self.atkImg.append(self.loadImg)
 
 		# default sprite rectangular size
 		self.rect = self.img.get_rect()
@@ -57,17 +62,16 @@ class player():
 
 		elif self.state == 1: # walking animations
 
-			print("state is 1")
-			print(self.moving_left)
-			print(self.moving_right)
-			print(self.moving_up)
-			print(self.moving_down)
-			print(self.posx)
-			print(self.posy)
+			# print("state is 1")
+			# print(self.moving_left)
+			# print(self.moving_right)
+			# print(self.moving_up)
+			# print(self.moving_down)
+			# print(self.posx)
+			# print(self.posy)
 
 			# only update to the next animation every 10th/integer moves
 			if self.posx % 10 == 0 or self.posy % 10 == 0:
-				print("conditions met")
 				if self.animationInt >= 6: # hardcoded, walk has 6 images
 					self.animationInt = 0
 				if self.dir == 0:
@@ -75,6 +79,17 @@ class player():
 				elif self.dir == 1:
 					self.img = pygame.transform.flip(self.walkImg[self.animationInt], True, False)
 				self.animationInt+=1
+
+		elif self.state == 2: # attack animation
+
+			if self.animationInt >= 6: # hardcoded, attack has 6 images
+				self.animationInt = 0
+			if self.dir == 0:
+				self.img = self.atkImg[self.animationInt]
+			elif self.dir == 1:
+				self.img = pygame.transform.flip(self.atkImg[self.animationInt], True, False)
+			self.animationInt+=1
+
 
 
 	def blitChar(self):
@@ -87,9 +102,10 @@ class player():
 		self.screen.blit(self.img, self.rect)
 
 
+	# updates character location, only applicable for walking, jumping
 	def updateLoc(self):
 
-		
+	
 		# halve the speed if the character is moving diagonally
 		#if self.moving_right and self.moving_up or self.moving_right and self.moving_down or \
 		#	self.moving_left and self.moving_up or self.moving_left and self.moving_down:
