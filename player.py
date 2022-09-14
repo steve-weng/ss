@@ -15,7 +15,7 @@ class player():
 		# holds current image, default is the idle
 		self.img = self.idleImg
 
-		self.count = float(0)
+		self.animationSpeed = float(0.1)
 
 		# holds current state
 		# 0 = idle, 1 = walk, 2 = attack, 3 = jump, 4 = hurt
@@ -82,9 +82,8 @@ class player():
 
 		elif self.state == 2: # attack animation
 
-			print(self.count)
-			if self.count % 10 == 0:
-				print("y")
+			# slows down animation for attack
+			if self.animationSpeed % 5 == 0:
 				if self.animationInt >= 6: # hardcoded, attack has 6 images
 					self.animationInt = 0
 				if self.dir == 0:
@@ -92,9 +91,10 @@ class player():
 				elif self.dir == 1:
 					self.img = pygame.transform.flip(self.atkImg[self.animationInt], True, False)
 				self.animationInt+=1
+				self.animationSpeed += 0.1
 			else:
-				print("n")
-				self.count += 0.1
+				self.animationSpeed += 0.1
+				self.animationSpeed = round(self.animationSpeed, 1)
 
 
 
