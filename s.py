@@ -7,9 +7,7 @@ def checkEvents(event, p1):
 	if event.type == pygame.QUIT:
 		sys.exit()
 
-
 	elif event.type == pygame.KEYDOWN:
-
 		if event.key == pygame.K_RIGHT:
 			p1.moving_right = True
 			p1.moving_left = False
@@ -32,10 +30,8 @@ def checkEvents(event, p1):
 		elif event.key == pygame.K_a:
 			p1.state = 2
 
-
 	elif event.type == pygame.KEYUP:
 
-		#p1.animationInt = 0
 		if event.key == pygame.K_RIGHT:
 			p1.moving_right = False
 		elif event.key == pygame.K_LEFT:
@@ -45,10 +41,8 @@ def checkEvents(event, p1):
 		elif event.key == pygame.K_DOWN:
 			p1.moving_down = False
 
-	#	elif event.key == pygame.K_a:
-
-
-		p1.state = 0
+		if not (p1.moving_right or p1.moving_down or p1.moving_up or p1.moving_left):
+			p1.state = 0
 
 
 def init_game():
