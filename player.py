@@ -75,7 +75,7 @@ class player():
 		elif self.state == 2: # attack animation
 
 			# slows down animation for attack
-			if self.animationSpeed % 5 == 0:
+			if self.animationSpeed % 10 == 0:
 				if self.animationInt >= 6: # hardcoded, attack has 6 images
 					self.animationInt = 0
 				if self.dir == 0:
@@ -87,7 +87,6 @@ class player():
 			else:
 				self.animationSpeed += 0.1
 				self.animationSpeed = round(self.animationSpeed, 1)
-
 
 
 	def blitChar(self):
