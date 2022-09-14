@@ -71,7 +71,7 @@ class player():
 		if self.state == 3: # jump animation
 
 			# reset frames to 0 if we're at the last animation
-			if self.frameCount[self.state] >= 6: # hardcoded, jump has 7 images
+			if self.frameCount[self.state] >= 7: # hardcoded, jump has 7 images
 				self.frameCount[self.state] = 0
 
 			print("current frame is " + str(self.frameCount[self.state]))
@@ -110,7 +110,7 @@ class player():
 
 		elif self.state == 1: # walking animations
 
-			if self.frameCount[self.state] >= 5: # hardcoded, walk has 6 images
+			if self.frameCount[self.state] >= 6: # hardcoded, walk has 6 images
 				self.frameCount[self.state] = 0
 
 			# only update to the next animation every 10th/integer moves
@@ -124,7 +124,7 @@ class player():
 
 		elif self.state == 2: # attack animation
 
-			if self.frameCount[self.state] >= 5: # hardcoded, attack has 6 images
+			if self.frameCount[self.state] >= 6: # hardcoded, attack has 6 images
 				self.frameCount[self.state] = 0
 
 			# slows down animation for attack
