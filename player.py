@@ -21,7 +21,7 @@ class player():
 		# 0 = idle, 1 = walk, 2 = attack, 3 = jump, 4 = hurt
 		self.state = 0
 		self.dir = 0 # direction facing, 0 for right, 1 for left, 2 up, 3 down
-
+ 
 		# loading in walking animation
 		self.walkImg = []
 		for i in range(1, 7): # 6 frames
@@ -61,14 +61,6 @@ class player():
 				self.img = pygame.transform.flip(self.idleImg, True, False)
 
 		elif self.state == 1: # walking animations
-
-			# print("state is 1")
-			# print(self.moving_left)
-			# print(self.moving_right)
-			# print(self.moving_up)
-			# print(self.moving_down)
-			# print(self.posx)
-			# print(self.posy)
 
 			# only update to the next animation every 10th/integer moves
 			if self.posx % 10 == 0 or self.posy % 10 == 0:
