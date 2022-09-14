@@ -60,6 +60,7 @@ class player():
 		self.is_jumping = False
 		self.is_idle = True
 		self.is_dead = False
+		self.is_moving = False
 
 		# holds movement direction
 		self.moving_right = False
@@ -67,30 +68,30 @@ class player():
 		self.moving_up = False
 		self.moving_down = False
 
+		# previous state to revert to when needed
+		self.prevState = 0
+
 
 	# after jump, attack, hurt, determine if char should be idle or walking
 	def revertState(self):
 
+		self.state = self.prevState
+		if self.state == 1:
+			self.is_moving = True
+
+		# self.prevState = 0
 		# if character is not walking in any direction, set state back to idle
-		if not (self.moving_right or self.moving_down or self.moving_up or self.moving_left):
-			self.state = 0
-			print("state reverted to idle")
+		# if not (self.moving_right or self.moving_down or self.moving_up or self.moving_left):
+		# 	self.state = 0
+		# 	print("state reverted to idle")
 
-		else:
-			self.state = 1
-			print("moving right is " + str(self.moving_right))
-			print("moving left is " + str(self.moving_left))
-			print("moving up is " + str(self.moving_up))
-
-			print("state reverted to walk")
+		# else:
+		# 	self.state = 1
 
 	# stop walking if character is attacking, or jumping, or hurt
 	def stopMovement(self):
 
-		self.moving_up = False
-		self.moving_down = False
-		self.moving_left = False
-		self.moving_right = False
+		self.is_moving = False
 
 	def updateAnimationInt(self):
 
@@ -103,14 +104,12 @@ class player():
 
 
 		elif self.state == 1: # walking animations
-			#print("walk")
 
 			if self.frameCount[self.state] >= 6: # hardcoded, walk has 6 images
 				self.frameCount[self.state] = 0
 
 			# only update to the next animation every 10th/integer moves
 			if self.posx % 10 == 0 or self.posy % 10 == 0:
-
 				if self.dir == 0:
 					self.img = self.walkImg[self.frameCount[self.state]]
 				elif self.dir == 1:
@@ -123,8 +122,8 @@ class player():
 			print(self.frameCount[self.state])
 			if self.frameCount[self.state] >= 5: # hardcoded, attack has 5 images
 				self.frameCount[self.state] = 0
-				self.dnd = False
 				self.is_attacking = False
+				self.dnd = False
 				self.revertState()
 				
 			# slows down animation for attack
@@ -212,6 +211,9 @@ class player():
 		#if self.moving_right and self.moving_up or self.moving_right and self.moving_down or \
 		#	self.moving_left and self.moving_up or self.moving_left and self.moving_down:
 		#	speedFactor = 0.5
+		
+		if self.is_moving == False:
+			return
 
 		# up down left right movement
 		if self.moving_right and self.rect.right < self.screen_rect.right:

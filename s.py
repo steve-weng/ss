@@ -9,25 +9,31 @@ def checkEvents(event, p1):
 
 	elif event.type == pygame.KEYDOWN:
 		if event.key == pygame.K_RIGHT:
+			print("move right")
+			p1.is_moving = True
 			p1.moving_right = True
 			p1.moving_left = False
 			p1.state = 1
 			p1.dir = 0
 		elif event.key == pygame.K_LEFT:
+			p1.is_moving = True
 			p1.moving_left = True
 			p1.moving_right = False
 			p1.state = 1
 			p1.dir = 1
 		elif event.key == pygame.K_UP:
+			p1.is_moving = True
 			p1.moving_up = True
 			p1.moving_down = False
 			p1.state = 1
 		elif event.key == pygame.K_DOWN:
+			p1.is_moving = True
 			p1.moving_down = True
 			p1.moving_up = False
 			p1.state = 1
 
 		elif event.key == pygame.K_a:
+			p1.prevState = p1.state
 			p1.state = 2
 			p1.is_attacking = True
 			p1.dnd = True
@@ -40,7 +46,6 @@ def checkEvents(event, p1):
 
 	elif event.type == pygame.KEYUP:
 
-		print("is this ever used lmaoooooooooo " + str(pygame.KEYUP))
 		if event.key == pygame.K_RIGHT:
 			p1.moving_right = False
 			print("moving right released")
@@ -55,9 +60,9 @@ def checkEvents(event, p1):
 			print("moving down released")
 
 		# temp fix, assuming if not attacking then set default state to 1 = walk
-		elif event.key == pygame.K_a or event.key == pygame.K_j:
+		#elif event.key == pygame.K_a or event.key == pygame.K_j:
 			#p1.state = 1 
-			print("a or j released")
+		#	print("a or j released")
 
 		p1.revertState()
 
