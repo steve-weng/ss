@@ -10,12 +10,12 @@ class player():
 
 		# used to keep track of which frame the current animation is on for each state
 		self.frameCount = [0, 0, 0, 0, 0]
+		self.atkFrameSpeed = float(0.1)
 
 		self.idleImg = pygame.image.load('imgs/knight.png')
 		# holds current image, default is the idle
 		self.img = self.idleImg
 
-		self.animationSpeed = float(0.1)
 		self.midair = False # for jumping that gets interrupted
 
 		# holds current state
@@ -103,7 +103,7 @@ class player():
 		elif self.state == 2: # attack animation
 
 			# slows down animation for attack
-			if self.animationSpeed % 10 == 0:
+			if self.atkFrameSpeed % 10 == 0:
 				if self.frameCount[self.state] >= 6: # hardcoded, attack has 6 images
 					self.frameCount[self.state] = 0
 				if self.dir == 0:
@@ -111,10 +111,10 @@ class player():
 				elif self.dir == 1:
 					self.img = pygame.transform.flip(self.atkImg[self.frameCount[self.state]], True, False)
 				self.frameCount[self.state]+=1
-				self.animationSpeed += 0.1
+				self.atkFrameSpeed += 0.1
 			else:
-				self.animationSpeed += 0.1
-				self.animationSpeed = round(self.animationSpeed, 1)
+				self.atkFrameSpeed += 0.1
+				self.atkFrameSpeed = round(self.atkFrameSpeed, 1)
 
 
 
