@@ -8,14 +8,15 @@ class player():
 		self.screen = screen
 		self.screen_rect = screen.get_rect()
 
-		# used to keep track of which count the current animation is on
-		self.animationInt = 0
+		# used to keep track of which frame the current animation is on for each state
+		self.frameCount = [0, 0, 0, 0, 0]
 
 		self.idleImg = pygame.image.load('imgs/knight.png')
 		# holds current image, default is the idle
 		self.img = self.idleImg
 
 		self.animationSpeed = float(0.1)
+		self.midair = False # for jumping that gets interrupted
 
 		# holds current state
 		# 0 = idle, 1 = walk, 2 = attack, 3 = jump, 4 = hurt
@@ -32,6 +33,11 @@ class player():
 		for i in range(1, 7):
 			self.loadImg = pygame.image.load('imgs/attk/walk_attack' + str(i) + '.png')
 			self.atkImg.append(self.loadImg)
+
+		self.jumpImg = []
+		for i in range(1, 8):
+			self.loadImg = pygame.image.load('imgs/jump/jump' + str(i) + '.png')
+			self.jumpImg.append(self.loadImg)		
 
 		# default sprite rectangular size
 		self.rect = self.img.get_rect()
@@ -53,6 +59,28 @@ class player():
 
 	def updateAnimationInt(self):
 
+		# if self.state == 3: # jump animation
+
+		# 	# slows down animation
+		# 	if self.animationSpeed % 10 == 0:
+		# 		if self.frameCount >= 6: # hardcoded, attack has 6 images
+		# 			self.animationInt = 0
+		# 		if self.dir == 0:
+		# 			self.img = self.jumpImg[self.animationInt]
+		# 		elif self.dir == 1:
+		# 			self.img = pygame.transform.flip(self.jumpImg[self.animationInt], True, False)
+		# 		self.animationInt+=1
+		# 		self.animationSpeed += 0.1
+		# 	else:
+		# 		self.animationSpeed += 0.1
+		# 		self.animationSpeed = round(self.animationSpeed, 1)
+
+		# 	# first 3 frames for jumping is up, latter 3 is down (middle stays in the air)
+		# 	if self.animationInt <= 2:
+		# 		self.posy -= 0.2
+		# 	elif self.animationInt > 3:
+		# 		self.posy += 0.2
+
 		# set up which animation
 		if self.state == 0: # idle animations
 			if self.dir == 0: # idle image direction
@@ -64,29 +92,31 @@ class player():
 
 			# only update to the next animation every 10th/integer moves
 			if self.posx % 10 == 0 or self.posy % 10 == 0:
-				if self.animationInt >= 6: # hardcoded, walk has 6 images
-					self.animationInt = 0
+				if self.frameCount[self.state] >= 6: # hardcoded, walk has 6 images
+					self.frameCount[self.state] = 0
 				if self.dir == 0:
-					self.img = self.walkImg[self.animationInt]
+					self.img = self.walkImg[self.frameCount[self.state]]
 				elif self.dir == 1:
-					self.img = pygame.transform.flip(self.walkImg[self.animationInt], True, False)
-				self.animationInt+=1
+					self.img = pygame.transform.flip(self.walkImg[self.frameCount[self.state]], True, False)
+				self.frameCount[self.state]+=1
 
 		elif self.state == 2: # attack animation
 
 			# slows down animation for attack
 			if self.animationSpeed % 10 == 0:
-				if self.animationInt >= 6: # hardcoded, attack has 6 images
-					self.animationInt = 0
+				if self.frameCount[self.state] >= 6: # hardcoded, attack has 6 images
+					self.frameCount[self.state] = 0
 				if self.dir == 0:
-					self.img = self.atkImg[self.animationInt]
+					self.img = self.atkImg[self.frameCount[self.state]]
 				elif self.dir == 1:
-					self.img = pygame.transform.flip(self.atkImg[self.animationInt], True, False)
-				self.animationInt+=1
+					self.img = pygame.transform.flip(self.atkImg[self.frameCount[self.state]], True, False)
+				self.frameCount[self.state]+=1
 				self.animationSpeed += 0.1
 			else:
 				self.animationSpeed += 0.1
 				self.animationSpeed = round(self.animationSpeed, 1)
+
+
 
 
 	def blitChar(self):
@@ -108,6 +138,7 @@ class player():
 		#	self.moving_left and self.moving_up or self.moving_left and self.moving_down:
 		#	speedFactor = 0.5
 
+		# up down left right movement
 		if self.moving_right and self.rect.right < self.screen_rect.right:
 			self.posx += 0.1 
 			self.posx = round(self.posx, 1)

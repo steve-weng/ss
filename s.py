@@ -30,6 +30,9 @@ def checkEvents(event, p1):
 		elif event.key == pygame.K_a:
 			p1.state = 2
 
+		elif event.key == pygame.K_j:
+			p1.state = 3
+
 	elif event.type == pygame.KEYUP:
 
 		if event.key == pygame.K_RIGHT:
@@ -42,7 +45,7 @@ def checkEvents(event, p1):
 			p1.moving_down = False
 
 		# temp fix, assuming if not attacking then set default state to 1 = walk
-		elif event.key == pygame.K_a:
+		elif event.key == pygame.K_a or event.key == pygame.K_j:
 			p1.state = 1 
 
 		# if character is not walking in any direction, set state back to idle
