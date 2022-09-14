@@ -31,8 +31,8 @@ class player():
 			self.walkImg.append(self.loadImg)
 
 		self.atkImg = []
-		for i in range(1, 7):
-			self.loadImg = pygame.image.load('imgs/attk/walk_attack' + str(i) + '.png')
+		for i in range(1, 6):
+			self.loadImg = pygame.image.load('imgs/attack/attack' + str(i) + '.png')
 			self.atkImg.append(self.loadImg)
 
 		self.jumpImg = []
@@ -51,6 +51,8 @@ class player():
 		self.posx = self.rect.centerx + 0.1
 		self.posy = self.rect.bottom + 0.1
 
+		# do not disturb flag - do not disturb if char is in certain animations
+		self.dnd = False 
 
 		# priority.  hurt > attack > jump > movement > idle
 		self.is_hurt = False
@@ -66,39 +68,31 @@ class player():
 		self.moving_down = False
 
 
+	# after jump, attack, hurt, determine if char should be idle or walking
+	def revertState(self):
+
+		# if character is not walking in any direction, set state back to idle
+		if not (self.moving_right or self.moving_down or self.moving_up or self.moving_left):
+			self.state = 0
+			print("state reverted to idle")
+
+		else:
+			self.state = 1
+			print("moving right is " + str(self.moving_right))
+			print("moving left is " + str(self.moving_left))
+			print("moving up is " + str(self.moving_up))
+
+			print("state reverted to walk")
+
+	# stop walking if character is attacking, or jumping, or hurt
+	def stopMovement(self):
+
+		self.moving_up = False
+		self.moving_down = False
+		self.moving_left = False
+		self.moving_right = False
+
 	def updateAnimationInt(self):
-
-		if self.state == 3: # jump animation
-
-			# reset frames to 0 if we're at the last animation
-			if self.frameCount[self.state] >= 7: # hardcoded, jump has 7 images
-				self.frameCount[self.state] = 0
-
-			print("current frame is " + str(self.frameCount[self.state]))
-
-			# slows down animation
-			if self.jumpFrameSpeed % 10 == 0:
-			
-					#print("reset at 0")
-				if self.dir == 0:
-					self.img = self.jumpImg[self.frameCount[self.state]]
-				elif self.dir == 1:
-					self.img = pygame.transform.flip(self.jumpImg[self.frameCount[self.state]], True, False)
-				self.frameCount[self.state]+=1
-				self.jumpFrameSpeed += 0.1
-			else:
-				self.jumpFrameSpeed += 0.1
-				self.jumpFrameSpeed = round(self.jumpFrameSpeed, 1)
-			#print(self.frameCount[self.state])
-
-			# first 3 frames for jumping is up, latter 3 is down (middle stays in the air)
-			if self.frameCount[self.state] == 1 or self.frameCount[self.state] == 2:
-				self.posy -= 0.2
-				print("up " + str(self.frameCount[self.state]))
-			elif self.frameCount[self.state] == 4 or self.frameCount[self.state] == 5:
-				self.posy += 0.2
-				print("down " + str(self.frameCount[self.state]))
-
 
 		# idle animation
 		if self.state == 0: # idle animations
@@ -109,6 +103,7 @@ class player():
 
 
 		elif self.state == 1: # walking animations
+			#print("walk")
 
 			if self.frameCount[self.state] >= 6: # hardcoded, walk has 6 images
 				self.frameCount[self.state] = 0
@@ -124,9 +119,14 @@ class player():
 
 		elif self.state == 2: # attack animation
 
-			if self.frameCount[self.state] >= 6: # hardcoded, attack has 6 images
+			#print("attack")
+			print(self.frameCount[self.state])
+			if self.frameCount[self.state] >= 5: # hardcoded, attack has 5 images
 				self.frameCount[self.state] = 0
-
+				self.dnd = False
+				self.is_attacking = False
+				self.revertState()
+				
 			# slows down animation for attack
 			if self.atkFrameSpeed % 10 == 0:
 				# if finish attacking, reset to 0, end attack
@@ -142,6 +142,39 @@ class player():
 			else:
 				self.atkFrameSpeed += 0.1
 				self.atkFrameSpeed = round(self.atkFrameSpeed, 1)
+
+
+		# elif self.state == 3: # jump animation
+
+		# 	# reset frames to 0 if we're at the last animation
+		# 	if self.frameCount[self.state] >= 7: # hardcoded, jump has 7 images
+		# 		self.frameCount[self.state] = 0
+		# 		self.dnd = False
+		# 		self.is_jumping = False
+		# 		self.revertState()
+
+		# 	# slows down animation
+		# 	if self.jumpFrameSpeed % 10 == 0:
+			
+		# 			#print("reset at 0")
+		# 		if self.dir == 0:
+		# 			self.img = self.jumpImg[self.frameCount[self.state]]
+		# 		elif self.dir == 1:
+		# 			self.img = pygame.transform.flip(self.jumpImg[self.frameCount[self.state]], True, False)
+		# 		self.frameCount[self.state]+=1
+		# 		self.jumpFrameSpeed += 0.1
+		# 	else:
+		# 		self.jumpFrameSpeed += 0.1
+		# 		self.jumpFrameSpeed = round(self.jumpFrameSpeed, 1)
+		# 	#print(self.frameCount[self.state])
+
+		# 	# first 3 frames for jumping is up, latter 3 is down (middle stays in the air)
+		# 	if self.frameCount[self.state] == 1 or self.frameCount[self.state] == 2:
+		# 		self.posy -= 0.2
+		# 		print("up " + str(self.frameCount[self.state]))
+		# 	elif self.frameCount[self.state] == 4 or self.frameCount[self.state] == 5:
+		# 		self.posy += 0.2
+		# 		print("down " + str(self.frameCount[self.state]))
 
 
 

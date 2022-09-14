@@ -30,30 +30,36 @@ def checkEvents(event, p1):
 		elif event.key == pygame.K_a:
 			p1.state = 2
 			p1.is_attacking = True
+			p1.dnd = True
+			p1.stopMovement()
 
-		elif event.key == pygame.K_j:
-			p1.state = 3
-			p1.is_jumping = True
+		#elif event.key == pygame.K_j:
+		#	p1.state = 3
+		#	p1.is_jumping = True
+		#	p1.dnd = True
 
 	elif event.type == pygame.KEYUP:
 
+		print("is this ever used lmaoooooooooo " + str(pygame.KEYUP))
 		if event.key == pygame.K_RIGHT:
 			p1.moving_right = False
+			print("moving right released")
 		elif event.key == pygame.K_LEFT:
 			p1.moving_left = False
+			print("moving left released")
 		elif event.key == pygame.K_UP:
 			p1.moving_up = False
+			print("moving up released")
 		elif event.key == pygame.K_DOWN:
 			p1.moving_down = False
+			print("moving down released")
 
 		# temp fix, assuming if not attacking then set default state to 1 = walk
 		elif event.key == pygame.K_a or event.key == pygame.K_j:
-			p1.state = 1 
+			#p1.state = 1 
+			print("a or j released")
 
-		# if character is not walking in any direction, set state back to idle
-		if not (p1.moving_right or p1.moving_down or p1.moving_up or p1.moving_left):
-			p1.state = 0
-
+		p1.revertState()
 
 def init_game():
 
@@ -68,7 +74,8 @@ def init_game():
 
 	while True:
 		for event in pygame.event.get():
-			checkEvents(event, p1)
+			if not p1.dnd:
+				checkEvents(event, p1)
 
 		screen.fill(red)
 		p1.updateLoc()
