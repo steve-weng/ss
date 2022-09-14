@@ -29,9 +29,11 @@ def checkEvents(event, p1):
 
 		elif event.key == pygame.K_a:
 			p1.state = 2
+			p1.is_attacking = True
 
 		elif event.key == pygame.K_j:
 			p1.state = 3
+			p1.is_jumping = True
 
 	elif event.type == pygame.KEYUP:
 

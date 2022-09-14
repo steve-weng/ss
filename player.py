@@ -11,6 +11,7 @@ class player():
 		# used to keep track of which frame the current animation is on for each state
 		self.frameCount = [0, 0, 0, 0, 0]
 		self.atkFrameSpeed = float(0.1)
+		self.jumpFrameSpeed = float(0.1)
 
 		self.idleImg = pygame.image.load('imgs/knight.png')
 		# holds current image, default is the idle
@@ -19,7 +20,7 @@ class player():
 		self.midair = False # for jumping that gets interrupted
 
 		# holds current state
-		# 0 = idle, 1 = walk, 2 = attack, 3 = jump, 4 = hurt
+		# 0 = idle, 1 = walk, 2 = attack, 3 = jump, 4 = hurt, 5 = dead
 		self.state = 0
 		self.dir = 0 # direction facing, 0 for right, 1 for left, 2 up, 3 down
  
@@ -50,6 +51,14 @@ class player():
 		self.posx = self.rect.centerx + 0.1
 		self.posy = self.rect.bottom + 0.1
 
+
+		# priority.  hurt > attack > jump > movement > idle
+		self.is_hurt = False
+		self.is_attacking = False
+		self.is_jumping = False
+		self.is_idle = True
+		self.is_dead = False
+
 		# holds movement direction
 		self.moving_right = False
 		self.moving_left = False
@@ -59,41 +68,54 @@ class player():
 
 	def updateAnimationInt(self):
 
-		# if self.state == 3: # jump animation
+		if self.state == 3: # jump animation
 
-		# 	# slows down animation
-		# 	if self.animationSpeed % 10 == 0:
-		# 		if self.frameCount >= 6: # hardcoded, attack has 6 images
-		# 			self.animationInt = 0
-		# 		if self.dir == 0:
-		# 			self.img = self.jumpImg[self.animationInt]
-		# 		elif self.dir == 1:
-		# 			self.img = pygame.transform.flip(self.jumpImg[self.animationInt], True, False)
-		# 		self.animationInt+=1
-		# 		self.animationSpeed += 0.1
-		# 	else:
-		# 		self.animationSpeed += 0.1
-		# 		self.animationSpeed = round(self.animationSpeed, 1)
+			# reset frames to 0 if we're at the last animation
+			if self.frameCount[self.state] >= 6: # hardcoded, jump has 7 images
+				self.frameCount[self.state] = 0
 
-		# 	# first 3 frames for jumping is up, latter 3 is down (middle stays in the air)
-		# 	if self.animationInt <= 2:
-		# 		self.posy -= 0.2
-		# 	elif self.animationInt > 3:
-		# 		self.posy += 0.2
+			print("current frame is " + str(self.frameCount[self.state]))
 
-		# set up which animation
+			# slows down animation
+			if self.jumpFrameSpeed % 10 == 0:
+			
+					#print("reset at 0")
+				if self.dir == 0:
+					self.img = self.jumpImg[self.frameCount[self.state]]
+				elif self.dir == 1:
+					self.img = pygame.transform.flip(self.jumpImg[self.frameCount[self.state]], True, False)
+				self.frameCount[self.state]+=1
+				self.jumpFrameSpeed += 0.1
+			else:
+				self.jumpFrameSpeed += 0.1
+				self.jumpFrameSpeed = round(self.jumpFrameSpeed, 1)
+			#print(self.frameCount[self.state])
+
+			# first 3 frames for jumping is up, latter 3 is down (middle stays in the air)
+			if self.frameCount[self.state] == 1 or self.frameCount[self.state] == 2:
+				self.posy -= 0.2
+				print("up " + str(self.frameCount[self.state]))
+			elif self.frameCount[self.state] == 4 or self.frameCount[self.state] == 5:
+				self.posy += 0.2
+				print("down " + str(self.frameCount[self.state]))
+
+
+		# idle animation
 		if self.state == 0: # idle animations
 			if self.dir == 0: # idle image direction
 				self.img = self.idleImg
 			elif self.dir == 1:
 				self.img = pygame.transform.flip(self.idleImg, True, False)
 
+
 		elif self.state == 1: # walking animations
+
+			if self.frameCount[self.state] >= 5: # hardcoded, walk has 6 images
+				self.frameCount[self.state] = 0
 
 			# only update to the next animation every 10th/integer moves
 			if self.posx % 10 == 0 or self.posy % 10 == 0:
-				if self.frameCount[self.state] >= 6: # hardcoded, walk has 6 images
-					self.frameCount[self.state] = 0
+
 				if self.dir == 0:
 					self.img = self.walkImg[self.frameCount[self.state]]
 				elif self.dir == 1:
@@ -102,10 +124,15 @@ class player():
 
 		elif self.state == 2: # attack animation
 
+			if self.frameCount[self.state] >= 5: # hardcoded, attack has 6 images
+				self.frameCount[self.state] = 0
+
 			# slows down animation for attack
 			if self.atkFrameSpeed % 10 == 0:
-				if self.frameCount[self.state] >= 6: # hardcoded, attack has 6 images
-					self.frameCount[self.state] = 0
+				# if finish attacking, reset to 0, end attack
+
+					#self.is_attacking = False
+					#self.state = 1
 				if self.dir == 0:
 					self.img = self.atkImg[self.frameCount[self.state]]
 				elif self.dir == 1:
@@ -129,10 +156,25 @@ class player():
 		self.screen.blit(self.img, self.rect)
 
 
+	# hurt > attack >= jump > move > idle (prototype). returns the state
+	def checkMovementPriorty(self):
+
+		if self.is_attacking:
+			return 2
+		elif self.is_jumping:
+			return 3
+		elif self.moving_right or self.moving_down or self.moving_up or self.moving_left:
+			return 1
+		else:
+			return 0
+
+
+
 	# updates character location, only applicable for walking, jumping
 	def updateLoc(self):
 
-	
+	#	self.checkMovementPriorty()
+
 		# halve the speed if the character is moving diagonally
 		#if self.moving_right and self.moving_up or self.moving_right and self.moving_down or \
 		#	self.moving_left and self.moving_up or self.moving_left and self.moving_down:
