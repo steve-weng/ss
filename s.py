@@ -116,6 +116,13 @@ def checkKeys(p1):
 	# 		p1.movingDir()
 
 
+def orderObjectsAndBlit(objList):
+
+	objList.sort(key = lambda x: x.posx)
+	objList.sort(key = lambda x: x.posy)
+	for x in objList:
+		x.blitChar()
+
 def init_game():
 
 	pygame.init()
@@ -126,7 +133,11 @@ def init_game():
 	bg = pygame.image.load("imgs/bg.png")
 	bg = pygame.transform.scale(bg, (1200,720))
 
+	objList = []
 	p1 = player(screen)
+	objList.append(p1)
+	ai = player(screen)
+	objList.append(ai)
 
 	while True:
 		for event in pygame.event.get():
@@ -136,8 +147,10 @@ def init_game():
 		checkKeys(p1)
 
 		screen.blit(bg, (0,0))
+		ai.updateLoc()
 		p1.updateLoc()
-		p1.blitChar()
+
+		orderObjectsAndBlit(objList)
 		pygame.display.flip()
 
 

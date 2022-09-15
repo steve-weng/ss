@@ -51,7 +51,7 @@ class player():
 
 		# where to place initial default sprite on the screen
 		self.rect.centerx = self.screen_rect.centerx - 500
-		self.rect.bottom = self.screen_rect.bottom - 115
+		self.rect.bottom = self.screen_rect.bottom - 200
 
 		# holds current position
 		self.posx = self.rect.centerx + 0.1
@@ -233,23 +233,23 @@ class player():
 		#	speedFactor = 0.5
 
 		if self.is_moving == False:
-			print("moving flag is false, not moving character")
+			#print("moving flag is false, not moving character")
 			return
 
 		# up down left right movement
 		if self.moving_right and self.rect.right < self.screen_rect.right:
-			print("moving right")
+			#print("moving right")
 			self.posx += 0.1 
 			self.posx = round(self.posx, 1)
 		if self.moving_left and self.rect.left > 0:
-			print("moving left")
+			#print("moving left")
 			self.posx -= 0.1
 			self.posx = round(self.posx, 1)
 		if self.moving_up and self.rect.top > 215: # foreground upper bounds
-			print("moving up")
+			#print("moving up")
 			self.posy -= 0.1
 			self.posy = round(self.posy, 1)
 		if self.moving_down and self.rect.bottom < self.screen_rect.bottom - 115: # lower bounds
-			print("moving down")
+			#print("moving down")
 			self.posy += 0.1 
 			self.posy = round(self.posy, 1)
