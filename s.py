@@ -67,6 +67,18 @@ def checkKeys(p1):
 			p1.is_jumping = False
 			p1.revertState()
 
+	# hurt
+	if keys[pygame.K_h]:
+		print("hurt key")
+		p1.is_hurt = True
+		p1.dnd = True
+		p1.prevState = p1.state
+		p1.state = 5
+	else:
+		if p1.state == 5:
+			p1.is_hurt = False
+			p1.revertState()
+
 	#print("no keys pressed, moving flag to false")
 
 	# elif keys[pygame.K_a]:

@@ -9,9 +9,10 @@ class player():
 		self.screen_rect = screen.get_rect()
 
 		# used to keep track of which frame the current animation is on for each state
-		self.frameCount = [0, 0, 0, 0, 0]
+		self.frameCount = [0, 0, 0, 0, 0, 0, 0]
 		self.atkFrameSpeed = float(0.1)
 		self.jumpFrameSpeed = float(0.1)
+		self.hurtFrameSpeed = float(0.1)
 
 		self.idleImg = pygame.image.load('imgs/knight.png')
 		# holds current image, default is the idle
@@ -20,7 +21,7 @@ class player():
 		self.midair = False # for jumping that gets interrupted
 
 		# holds current state
-		# 0 = idle, 1 = walk, 2 = attack, 3 = jump, 4 = hurt, 5 = dead
+		# 0 = idle, 1 = walk, 2 = attack, 3 = jump, 4 = jump attack, 5 = hurt, 6 = dead
 		self.state = 0
 		self.dir = 0 # direction facing, 0 for right, 1 for left, 2 up, 3 down
  
@@ -40,6 +41,11 @@ class player():
 			self.loadImg = pygame.image.load('imgs/jump/jump' + str(i) + '.png')
 			self.jumpImg.append(self.loadImg)		
 
+		self.hurtImg = []
+		for i in range(1, 5):
+			self.loadImg = pygame.image.load('imgs/hurt/hurt' + str(i) + '.png')
+			self.hurtImg.append(self.loadImg)		
+
 		# default sprite rectangular size
 		self.rect = self.img.get_rect()
 
@@ -50,6 +56,9 @@ class player():
 		# holds current position
 		self.posx = self.rect.centerx + 0.1
 		self.posy = self.rect.bottom + 0.1
+
+		self.hp = 100
+		self.mp = 100
 
 		# do not disturb flag - do not disturb if char is in certain animations
 		self.dnd = False 
@@ -119,12 +128,10 @@ class player():
 		elif self.state == 1: # walking animations
 			#print("we're walking frame: " + str(self.frameCount[self.state]))
 			if self.frameCount[self.state] >= 6: # hardcoded, walk has 6 images
-				print("we're on the final walk frame")
 				self.frameCount[self.state] = 0
 
 			# only update to the next animation every 10th/integer moves
 			if self.posx % 10 == 0 or self.posy % 10 == 0:
-				print("we're about to walk normally")
 				if self.dir == 0:
 					self.img = self.walkImg[self.frameCount[self.state]]
 				elif self.dir == 1:
@@ -186,7 +193,24 @@ class player():
 			elif self.frameCount[self.state] == 4 or self.frameCount[self.state] == 5:
 				self.posy += 0.2
 
+		elif self.state == 5: # hurt animations
 
+			if self.frameCount[self.state] >= 4: # hardcoded, hurt has 6 images
+				self.frameCount[self.state] = 0
+				self.is_hurt = False
+				self.dnd = False
+
+			# only update to the next animation every 10th/integer moves
+			if self.hurtFrameSpeed % 10 == 0:
+				if self.dir == 0:
+					self.img = self.hurtImg[self.frameCount[self.state]]
+				elif self.dir == 1:
+					self.img = pygame.transform.flip(self.hurtImg[self.frameCount[self.state]], True, False)
+				self.frameCount[self.state]+=1
+				self.hurtFrameSpeed += 0.1
+			else:
+				self.hurtFrameSpeed += 0.1
+				self.hurtFrameSpeed = round(self.hurtFrameSpeed, 1)
 
 	def blitChar(self):
 
@@ -195,7 +219,6 @@ class player():
 		# sets current sprite location to where its position is updated to
 		self.rect.centerx = self.posx
 		self.rect.bottom = self.posy
-		print("blitting")
 		self.screen.blit(self.img, self.rect)
 
 
