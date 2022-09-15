@@ -17,6 +17,7 @@ class player():
 		self.idleImg = pygame.image.load('imgs/knight.png')
 		# holds current image, default is the idle
 		self.img = self.idleImg
+		self.maskImg = pygame.mask.from_surface(self.img)
 
 		self.midair = False # for jumping that gets interrupted
 
@@ -211,6 +212,10 @@ class player():
 			else:
 				self.hurtFrameSpeed += 0.1
 				self.hurtFrameSpeed = round(self.hurtFrameSpeed, 1)
+
+		# set the new mask image for collision detection
+		self.maskImg = pygame.mask.from_surface(self.img)
+
 
 	def blitChar(self):
 

@@ -123,6 +123,19 @@ def orderObjectsAndBlit(objList):
 	for x in objList:
 		x.blitChar()
 
+
+def offset(mask1, mask2):
+	return int(mask2.posx - mask1.posx), int(mask2.posy - mask1.posy)
+
+
+def testCollision(p1,ai):
+
+	if p1.maskImg.overlap(ai.maskImg, offset(p1, ai)):
+		print("collision")
+	else:
+		print("no collision")
+
+
 def init_game():
 
 	pygame.init()
@@ -150,7 +163,10 @@ def init_game():
 		ai.updateLoc()
 		p1.updateLoc()
 
+		testCollision(p1, ai)
+
 		orderObjectsAndBlit(objList)
+
 		pygame.display.flip()
 
 
