@@ -77,7 +77,7 @@ class player():
 
 		self.state = self.prevState
 		if self.state == 1:
-			print("previous state is walking tho")
+			#print("previous state is walking tho")
 			self.is_moving = True
 			self.prevState = 0 # set previous state to default idle
 		else:
@@ -117,7 +117,7 @@ class player():
 
 
 		elif self.state == 1: # walking animations
-			print("we're walking frame: " + str(self.frameCount[self.state]))
+			#print("we're walking frame: " + str(self.frameCount[self.state]))
 			if self.frameCount[self.state] >= 6: # hardcoded, walk has 6 images
 				print("we're on the final walk frame")
 				self.frameCount[self.state] = 0
@@ -131,27 +131,28 @@ class player():
 					self.img = pygame.transform.flip(self.walkImg[self.frameCount[self.state]], True, False)
 				self.frameCount[self.state]+=1
 
-		# elif self.state == 2: # attack animation
 
-		# 	if self.frameCount[self.state] >= 5: # hardcoded, attack has 5 images
-		# 		self.frameCount[self.state] = 0
-		# 		self.is_attacking = False
-		# 		self.dnd = False
-		# 		self.revertState()
+		elif self.state == 2: # attack animation
 
-		# 	# slows down animation for attack
-		# 	if self.atkFrameSpeed % 10 == 0:
+			if self.frameCount[self.state] >= 5: # hardcoded, attack has 5 images
+				self.frameCount[self.state] = 0
+				self.is_attacking = False
+				self.dnd = False
+				self.revertState()
 
-		# 		# if finish attacking, reset to 0, end attack
-		# 		if self.dir == 0:
-		# 			self.img = self.atkImg[self.frameCount[self.state]]
-		# 		elif self.dir == 1:
-		# 			self.img = pygame.transform.flip(self.atkImg[self.frameCount[self.state]], True, False)
-		# 		self.frameCount[self.state]+=1
-		# 		self.atkFrameSpeed += 0.1
-		# 	else:
-		# 		self.atkFrameSpeed += 0.1
-		# 		self.atkFrameSpeed = round(self.atkFrameSpeed, 1)
+			# slows down animation for attack
+			if self.atkFrameSpeed % 10 == 0:
+
+				# if finish attacking, reset to 0, end attack
+				if self.dir == 0:
+					self.img = self.atkImg[self.frameCount[self.state]]
+				elif self.dir == 1:
+					self.img = pygame.transform.flip(self.atkImg[self.frameCount[self.state]], True, False)
+				self.frameCount[self.state]+=1
+				self.atkFrameSpeed += 0.1
+			else:
+				self.atkFrameSpeed += 0.1
+				self.atkFrameSpeed = round(self.atkFrameSpeed, 1)
 
 
 		# elif self.state == 3: # jump animation

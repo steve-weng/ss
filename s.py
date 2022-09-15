@@ -36,9 +36,23 @@ def checkKeys(p1):
 	else:
 		p1.moving_down = False
 
+	# if no directional keys are pressed then char is not moving
 	if not (keys[pygame.K_RIGHT] or keys[pygame.K_LEFT] or keys[pygame.K_UP] or keys[pygame.K_DOWN]):
 		p1.is_moving = False
-		p1.revertState()
+		p1.state = 0
+		p1.prevState = 0
+
+	# attack
+	if keys[pygame.K_a]:
+		p1.is_attacking = True
+		p1.prevState = p1.state # save current state to return to after attack
+		p1.state = 2
+	else:
+		if p1.state == 2:
+			p1.is_attacking = False
+			p1.revertState()
+
+
 	#print("no keys pressed, moving flag to false")
 
 	# elif keys[pygame.K_a]:
