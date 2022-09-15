@@ -4,6 +4,9 @@ from player import player
 
 def checkKeys(p1):
 
+	if p1.dnd:
+		return
+		
 	keys = pygame.key.get_pressed()
 
 	if keys[pygame.K_RIGHT]:
@@ -47,11 +50,22 @@ def checkKeys(p1):
 		p1.is_attacking = True
 		p1.prevState = p1.state # save current state to return to after attack
 		p1.state = 2
+		p1.dnd = True
 	else:
 		if p1.state == 2:
 			p1.is_attacking = False
 			p1.revertState()
 
+	# jump
+	if keys[pygame.K_s]:
+		p1.is_jumping = True
+		p1.prevState = p1.state # save current state to return to after attack
+		p1.state = 3
+		p1.dnd = True
+	else:
+		if p1.state == 3:
+			p1.is_jumping = False
+			p1.revertState()
 
 	#print("no keys pressed, moving flag to false")
 

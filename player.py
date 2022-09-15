@@ -138,7 +138,7 @@ class player():
 				self.frameCount[self.state] = 0
 				self.is_attacking = False
 				self.dnd = False
-				self.revertState()
+				#self.revertState()
 
 			# slows down animation for attack
 			if self.atkFrameSpeed % 10 == 0:
@@ -155,36 +155,36 @@ class player():
 				self.atkFrameSpeed = round(self.atkFrameSpeed, 1)
 
 
-		# elif self.state == 3: # jump animation
+		elif self.state == 3: # jump animation
 
-		# 	print("we're jumping")
-		# 	# reset frames to 0 if we're at the last animation
-		# 	if self.frameCount[self.state] >= 7: # hardcoded, jump has 7 images
+			#print("we're jumping")
+			# reset frames to 0 if we're at the last animation
+			if self.frameCount[self.state] >= 7: # hardcoded, jump has 7 images
 
-		# 		#print("we're on the final jump frame")
-		# 		self.frameCount[self.state] = 0
-		# 		self.is_jumping = False
-		# 		self.dnd = False	
-		# 		self.revertState()
+				#print("we're on the final jump frame")
+				self.frameCount[self.state] = 0
+				self.is_jumping = False
+				self.dnd = False	
+				#self.revertState()
 
-		# 	# slows down animation
-		# 	if self.jumpFrameSpeed % 10 == 0:
+			# slows down animation
+			if self.jumpFrameSpeed % 10 == 0:
 			
-		# 		if self.dir == 0:
-		# 			self.img = self.jumpImg[self.frameCount[self.state]]
-		# 		elif self.dir == 1:
-		# 			self.img = pygame.transform.flip(self.jumpImg[self.frameCount[self.state]], True, False)
-		# 		self.frameCount[self.state]+=1
-		# 		self.jumpFrameSpeed += 0.1
-		# 	else:
-		# 		self.jumpFrameSpeed += 0.1
-		# 		self.jumpFrameSpeed = round(self.jumpFrameSpeed, 1)
+				if self.dir == 0:
+					self.img = self.jumpImg[self.frameCount[self.state]]
+				elif self.dir == 1:
+					self.img = pygame.transform.flip(self.jumpImg[self.frameCount[self.state]], True, False)
+				self.frameCount[self.state]+=1
+				self.jumpFrameSpeed += 0.1
+			else:
+				self.jumpFrameSpeed += 0.1
+				self.jumpFrameSpeed = round(self.jumpFrameSpeed, 1)
 
-		# 	# first 3 frames for jumping is up, latter 3 is down (middle stays in the air)
-		# 	if self.frameCount[self.state] == 1 or self.frameCount[self.state] == 2:
-		# 		self.posy -= 0.2
-		# 	elif self.frameCount[self.state] == 4 or self.frameCount[self.state] == 5:
-		# 		self.posy += 0.2
+			# first 3 frames for jumping is up, latter 3 is down (middle stays in the air)
+			if self.frameCount[self.state] == 1 or self.frameCount[self.state] == 2:
+				self.posy -= 0.2
+			elif self.frameCount[self.state] == 4 or self.frameCount[self.state] == 5:
+				self.posy += 0.2
 
 
 
