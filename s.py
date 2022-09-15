@@ -2,69 +2,79 @@ import pygame
 import sys
 from player import player
 
-def checkEvents(event, p1):
+def checkKeys(p1):
 
-	if event.type == pygame.QUIT:
-		sys.exit()
+	keys = pygame.key.get_pressed()
 
-	elif event.type == pygame.KEYDOWN:
-		if event.key == pygame.K_RIGHT:
-			print("move right")
-			p1.is_moving = True
-			p1.moving_right = True
-			p1.moving_left = False
-			p1.state = 1
-			p1.dir = 0
-		elif event.key == pygame.K_LEFT:
-			p1.is_moving = True
-			p1.moving_left = True
-			p1.moving_right = False
-			p1.state = 1
-			p1.dir = 1
-		elif event.key == pygame.K_UP:
-			p1.is_moving = True
-			p1.moving_up = True
-			p1.moving_down = False
-			p1.state = 1
-		elif event.key == pygame.K_DOWN:
-			p1.is_moving = True
-			p1.moving_down = True
-			p1.moving_up = False
-			p1.state = 1
+	if keys[pygame.K_RIGHT]:
+		p1.is_moving = True
+		p1.moving_right = True
+		p1.state = 1
+		p1.dir = 0
+	else:
+		p1.moving_right = False
 
-		elif event.key == pygame.K_a:
-			p1.prevState = p1.state
-			p1.state = 2
-			p1.is_attacking = True
-			p1.dnd = True
-			p1.stopMovement()
+	if keys[pygame.K_LEFT]:
+		p1.is_moving = True
+		p1.moving_left = True
+		p1.state = 1
+		p1.dir = 1
+	else:
+		p1.moving_left = False
 
-		#elif event.key == pygame.K_j:
-		#	p1.state = 3
-		#	p1.is_jumping = True
-		#	p1.dnd = True
+	if keys[pygame.K_UP]:
+		p1.is_moving = True
+		p1.moving_up = True
+		p1.state = 1
+	else:
+		p1.moving_up = False
 
-	elif event.type == pygame.KEYUP:
+	if keys[pygame.K_DOWN]:
+		p1.is_moving = True
+		p1.moving_down = True
+		p1.state = 1
+	else:
+		p1.moving_down = False
 
-		if event.key == pygame.K_RIGHT:
-			p1.moving_right = False
-			print("moving right released")
-		elif event.key == pygame.K_LEFT:
-			p1.moving_left = False
-			print("moving left released")
-		elif event.key == pygame.K_UP:
-			p1.moving_up = False
-			print("moving up released")
-		elif event.key == pygame.K_DOWN:
-			p1.moving_down = False
-			print("moving down released")
-
-		# temp fix, assuming if not attacking then set default state to 1 = walk
-		#elif event.key == pygame.K_a or event.key == pygame.K_j:
-			#p1.state = 1 
-		#	print("a or j released")
-
+	if not (keys[pygame.K_RIGHT] or keys[pygame.K_LEFT] or keys[pygame.K_UP] or keys[pygame.K_DOWN]):
+		p1.is_moving = False
 		p1.revertState()
+	#print("no keys pressed, moving flag to false")
+
+	# elif keys[pygame.K_a]:
+	# 	p1.prevState = p1.state
+	# 	p1.state = 2
+	# 	p1.is_attacking = True
+	# 	p1.dnd = True
+	# 	p1.stopMovement()
+
+	# elif keys[pygame.K_j]:
+	# 	p1.prevState = p1.state
+	# 	p1.state = 3
+	# 	p1.is_jumping = True
+	# 	p1.dnd = True
+	# 	p1.stopMovement()
+
+	# elif event.type == pygame.KEYUP:
+
+	# 	if event.key == pygame.K_RIGHT:
+	# 		p1.moving_right = False
+	# 	elif event.key == pygame.K_LEFT:
+	# 		p1.moving_left = False
+	# 	elif event.key == pygame.K_UP:
+	# 		p1.moving_up = False
+	# 	elif event.key == pygame.K_DOWN:
+	# 		p1.moving_down = False
+	# 	elif event.key == pygame.K_a or event.key == pygame.K_j:
+	# 		p1.revertState()
+
+	# 	if not (p1.moving_down or p1.moving_up or p1.moving_left or p1.moving_right):
+	# 		p1.is_moving = False
+	# 		print("stop walking")
+	# 		p1.revertState()
+	# 		print("reverted")
+	# 		p1.movingDir()
+
 
 def init_game():
 
@@ -79,8 +89,10 @@ def init_game():
 
 	while True:
 		for event in pygame.event.get():
-			if not p1.dnd:
-				checkEvents(event, p1)
+			if event.type == pygame.QUIT:
+				sys.exit()
+		
+		checkKeys(p1)
 
 		screen.fill(red)
 		p1.updateLoc()

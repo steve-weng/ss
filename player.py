@@ -77,26 +77,39 @@ class player():
 
 		self.state = self.prevState
 		if self.state == 1:
+			print("previous state is walking tho")
 			self.is_moving = True
+			self.prevState = 0 # set previous state to default idle
+		else:
+			self.is_moving = False
+		#self.prevState = 0
 
-		# self.prevState = 0
-		# if character is not walking in any direction, set state back to idle
-		# if not (self.moving_right or self.moving_down or self.moving_up or self.moving_left):
-		# 	self.state = 0
-		# 	print("state reverted to idle")
-
-		# else:
-		# 	self.state = 1
 
 	# stop walking if character is attacking, or jumping, or hurt
 	def stopMovement(self):
 
 		self.is_moving = False
+		# self.moving_up = False
+		# self.moving_down = False
+		# self.moving_left = False
+		# self.moving_right = False
+
+	def movingDir(self):
+
+		print("moving up is " + str(self.moving_up))
+		print("moving down is " + str(self.moving_down))
+		print("moving left is " + str(self.moving_left))
+		print("moving right is " + str(self.moving_right))
+		print("movement flag is: " + str(self.is_moving))
+		print("state is: " + str(self.state))
 
 	def updateAnimationInt(self):
 
+		#print("calling animation function with state: " + str(self.state))
 		# idle animation
+
 		if self.state == 0: # idle animations
+			#print("state is 0 for some reason")
 			if self.dir == 0: # idle image direction
 				self.img = self.idleImg
 			elif self.dir == 1:
@@ -104,76 +117,73 @@ class player():
 
 
 		elif self.state == 1: # walking animations
-
+			print("we're walking frame: " + str(self.frameCount[self.state]))
 			if self.frameCount[self.state] >= 6: # hardcoded, walk has 6 images
+				print("we're on the final walk frame")
 				self.frameCount[self.state] = 0
 
 			# only update to the next animation every 10th/integer moves
 			if self.posx % 10 == 0 or self.posy % 10 == 0:
+				print("we're about to walk normally")
 				if self.dir == 0:
 					self.img = self.walkImg[self.frameCount[self.state]]
 				elif self.dir == 1:
 					self.img = pygame.transform.flip(self.walkImg[self.frameCount[self.state]], True, False)
 				self.frameCount[self.state]+=1
 
-		elif self.state == 2: # attack animation
+		# elif self.state == 2: # attack animation
 
-			#print("attack")
-			if self.frameCount[self.state] >= 5: # hardcoded, attack has 5 images
-				self.frameCount[self.state] = 0
-				self.is_attacking = False
-				self.dnd = False
-				self.revertState()
-				
-			# slows down animation for attack
-			if self.atkFrameSpeed % 10 == 0:
-				# if finish attacking, reset to 0, end attack
+		# 	if self.frameCount[self.state] >= 5: # hardcoded, attack has 5 images
+		# 		self.frameCount[self.state] = 0
+		# 		self.is_attacking = False
+		# 		self.dnd = False
+		# 		self.revertState()
 
-					#self.is_attacking = False
-					#self.state = 1
-				if self.dir == 0:
-					self.img = self.atkImg[self.frameCount[self.state]]
-				elif self.dir == 1:
-					self.img = pygame.transform.flip(self.atkImg[self.frameCount[self.state]], True, False)
-				self.frameCount[self.state]+=1
-				self.atkFrameSpeed += 0.1
-			else:
-				self.atkFrameSpeed += 0.1
-				self.atkFrameSpeed = round(self.atkFrameSpeed, 1)
+		# 	# slows down animation for attack
+		# 	if self.atkFrameSpeed % 10 == 0:
+
+		# 		# if finish attacking, reset to 0, end attack
+		# 		if self.dir == 0:
+		# 			self.img = self.atkImg[self.frameCount[self.state]]
+		# 		elif self.dir == 1:
+		# 			self.img = pygame.transform.flip(self.atkImg[self.frameCount[self.state]], True, False)
+		# 		self.frameCount[self.state]+=1
+		# 		self.atkFrameSpeed += 0.1
+		# 	else:
+		# 		self.atkFrameSpeed += 0.1
+		# 		self.atkFrameSpeed = round(self.atkFrameSpeed, 1)
 
 
 		# elif self.state == 3: # jump animation
 
+		# 	print("we're jumping")
 		# 	# reset frames to 0 if we're at the last animation
 		# 	if self.frameCount[self.state] >= 7: # hardcoded, jump has 7 images
+
+		# 		#print("we're on the final jump frame")
 		# 		self.frameCount[self.state] = 0
-		# 		self.dnd = False
 		# 		self.is_jumping = False
+		# 		self.dnd = False	
 		# 		self.revertState()
 
 		# 	# slows down animation
 		# 	if self.jumpFrameSpeed % 10 == 0:
 			
-		# 			#print("reset at 0")
 		# 		if self.dir == 0:
 		# 			self.img = self.jumpImg[self.frameCount[self.state]]
 		# 		elif self.dir == 1:
-		# 			self.img = pygame.transform.flip(self.jumpImg[self.frameCou                       nt[self.state]], True, False)
+		# 			self.img = pygame.transform.flip(self.jumpImg[self.frameCount[self.state]], True, False)
 		# 		self.frameCount[self.state]+=1
 		# 		self.jumpFrameSpeed += 0.1
 		# 	else:
 		# 		self.jumpFrameSpeed += 0.1
 		# 		self.jumpFrameSpeed = round(self.jumpFrameSpeed, 1)
-		# 	#print(self.frameCount[self.state])
 
 		# 	# first 3 frames for jumping is up, latter 3 is down (middle stays in the air)
 		# 	if self.frameCount[self.state] == 1 or self.frameCount[self.state] == 2:
 		# 		self.posy -= 0.2
-		# 		print("up " + str(self.frameCount[self.state]))
 		# 	elif self.frameCount[self.state] == 4 or self.frameCount[self.state] == 5:
 		# 		self.posy += 0.2
-		# 		print("down " + str(self.frameCount[self.state]))
-
 
 
 
@@ -184,20 +194,8 @@ class player():
 		# sets current sprite location to where its position is updated to
 		self.rect.centerx = self.posx
 		self.rect.bottom = self.posy
+		print("blitting")
 		self.screen.blit(self.img, self.rect)
-
-
-	# hurt > attack >= jump > move > idle (prototype). returns the state
-	def checkMovementPriorty(self):
-
-		if self.is_attacking:
-			return 2
-		elif self.is_jumping:
-			return 3
-		elif self.moving_right or self.moving_down or self.moving_up or self.moving_left:
-			return 1
-		else:
-			return 0
 
 
 	# updates character location, only applicable for walking, jumping
@@ -211,18 +209,23 @@ class player():
 		#	speedFactor = 0.5
 
 		if self.is_moving == False:
+			print("moving flag is false, not moving character")
 			return
 
 		# up down left right movement
 		if self.moving_right and self.rect.right < self.screen_rect.right:
+			print("moving right")
 			self.posx += 0.1 
 			self.posx = round(self.posx, 1)
 		if self.moving_left and self.rect.left > 0:
+			print("moving left")
 			self.posx -= 0.1
 			self.posx = round(self.posx, 1)
 		if self.moving_up and self.rect.top > 0:
+			print("moving up")
 			self.posy -= 0.1
 			self.posy = round(self.posy, 1)
 		if self.moving_down and self.rect.bottom < self.screen_rect.bottom:
+			print("moving down")
 			self.posy += 0.1 
 			self.posy = round(self.posy, 1)
