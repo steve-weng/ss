@@ -148,7 +148,7 @@ class player():
 				#self.revertState()
 
 			# slows down animation for attack
-			if self.atkFrameSpeed % 10 == 0:
+			if self.atkFrameSpeed % 90 == 0:
 
 				# if finish attacking, reset to 0, end attack
 				if self.dir == 0:
@@ -201,7 +201,7 @@ class player():
 				self.dnd = False
 
 			# only update to the next animation every 10th/integer moves
-			if self.hurtFrameSpeed % 10 == 0:
+			if self.hurtFrameSpeed % 90 == 0:
 				if self.dir == 0:
 					self.img = self.hurtImg[self.frameCount[self.state]]
 				elif self.dir == 1:
