@@ -119,7 +119,6 @@ class player():
 		elif self.state == 2: # attack animation
 
 			#print("attack")
-			print(self.frameCount[self.state])
 			if self.frameCount[self.state] >= 5: # hardcoded, attack has 5 images
 				self.frameCount[self.state] = 0
 				self.is_attacking = False
@@ -159,7 +158,7 @@ class player():
 		# 		if self.dir == 0:
 		# 			self.img = self.jumpImg[self.frameCount[self.state]]
 		# 		elif self.dir == 1:
-		# 			self.img = pygame.transform.flip(self.jumpImg[self.frameCount[self.state]], True, False)
+		# 			self.img = pygame.transform.flip(self.jumpImg[self.frameCou                       nt[self.state]], True, False)
 		# 		self.frameCount[self.state]+=1
 		# 		self.jumpFrameSpeed += 0.1
 		# 	else:
@@ -201,7 +200,6 @@ class player():
 			return 0
 
 
-
 	# updates character location, only applicable for walking, jumping
 	def updateLoc(self):
 
@@ -211,7 +209,7 @@ class player():
 		#if self.moving_right and self.moving_up or self.moving_right and self.moving_down or \
 		#	self.moving_left and self.moving_up or self.moving_left and self.moving_down:
 		#	speedFactor = 0.5
-		
+
 		if self.is_moving == False:
 			return
 
