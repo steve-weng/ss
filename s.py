@@ -6,7 +6,7 @@ def checkKeys(p1):
 
 	if p1.dnd:
 		return
-		
+
 	keys = pygame.key.get_pressed()
 
 	if keys[pygame.K_RIGHT]:
@@ -107,11 +107,12 @@ def checkKeys(p1):
 def init_game():
 
 	pygame.init()
-	screen = pygame.display.set_mode((1200,800))
+	screen = pygame.display.set_mode((1200,720))
 	pygame.display.set_caption("LOOOL")
-	red = [255, 0, 0]
-	screen.fill(red)
 	pygame.display.update()
+
+	bg = pygame.image.load("imgs/bg.png")
+	bg = pygame.transform.scale(bg, (1200,720))
 
 	p1 = player(screen)
 
@@ -122,7 +123,7 @@ def init_game():
 		
 		checkKeys(p1)
 
-		screen.fill(red)
+		screen.blit(bg, (0,0))
 		p1.updateLoc()
 		p1.blitChar()
 		pygame.display.flip()
