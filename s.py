@@ -96,13 +96,12 @@ def testCollision(p1,p2):
 
 	if(p1.is_attacking and not p2.is_hurt):
 		if p1.maskImg.overlap(p2.maskImg, offset(p1, p2)):
-			print("collision - setting previous state to: " + str(p2.state))
 			p2.prevState = p2.state
 			p2.state = 5
 			p2.is_hurt = True
 			p2.dnd = True
-		else:
-			print("no collision")
+	#	else:
+	#		print("no collision")
 
 def init_game():
 

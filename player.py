@@ -1,11 +1,12 @@
 import pygame
-#from settings import settings
+from settings import settings
 
 class player():
 	
 	def __init__(self, screen, hero):
 
 		self.hero = hero
+		self.settings = settings()
 
 		# screen rectangle size setup
 		self.screen = screen
@@ -72,22 +73,31 @@ class player():
 
 		self.idleImg = pygame.image.load('imgs/' + self.hero + '/' + self.hero + '.png')
 
+		numFrames = self.settings.frames(self.hero)
+
 		# loading in walking animation
-		for i in range(1, 7): # 6 frames
+		for i in range(1, numFrames[0] + 1): # 6 frames
 			self.loadImg = pygame.image.load('imgs/' + self.hero + '/walk/walk' + str(i) + '.png')
 			self.walkImg.append(self.loadImg)
 
-		for i in range(1, 6):
+		# attack
+		for i in range(1, numFrames[1] + 1):
 			self.loadImg = pygame.image.load('imgs/' + self.hero + '/attack/attack' + str(i) + '.png')
 			self.atkImg.append(self.loadImg)
 
-		for i in range(1, 8):
+		# jump
+		for i in range(1, numFrames[2] + 1):
 			self.loadImg = pygame.image.load('imgs/' + self.hero + '/jump/jump' + str(i) + '.png')
 			self.jumpImg.append(self.loadImg)		
 
-		for i in range(1, 5):
+		# empty jump attack
+
+		# hurt
+		for i in range(1, numFrames[4] + 1):
 			self.loadImg = pygame.image.load('imgs/' + self.hero + '/hurt/hurt' + str(i) + '.png')
-			self.hurtImg.append(self.loadImg)	
+			self.hurtImg.append(self.loadImg)
+
+		# empty dead
 
 
 	# after jump, attack, hurt, determine if char should be idle or walking
@@ -106,7 +116,6 @@ class player():
 		# idle animation
 
 		if self.state == 0: # idle animations
-			#print("state is 0 for some reason")
 			if self.dir == 0: # idle image direction
 				self.img = self.idleImg
 			elif self.dir == 1:
@@ -179,7 +188,6 @@ class player():
 		elif self.state == 5: # hurt animations
 
 			if self.frameCount[self.state] >= 4: # hardcoded, hurt has 4 images
-				print("done hurt")
 				self.frameCount[self.state] = 0
 				self.is_hurt = False
 				self.dnd = False
@@ -187,13 +195,11 @@ class player():
 
 			# only update to the next animation every 10th/integer moves
 			if self.hurtFrameSpeed % 10 == 0:
-				print("in the middle of hurt")
 				if self.dir == 0:
 					self.img = self.hurtImg[self.frameCount[self.state]]
 				elif self.dir == 1:
 					self.img = pygame.transform.flip(self.hurtImg[self.frameCount[self.state]], True, False)
 				self.frameCount[self.state]+=1
-				print("frame is now " + str(self.frameCount[self.state]))
 				self.hurtFrameSpeed += 0.1
 			else:
 				self.hurtFrameSpeed += 0.1
