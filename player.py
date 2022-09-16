@@ -85,6 +85,7 @@ class player():
 	# after jump, attack, hurt, determine if char should be idle or walking
 	def revertState(self):
 
+		print("previous state was: " + str(self.prevState))
 		self.state = self.prevState
 		if self.state == 1:
 			#print("previous state is walking tho")
@@ -149,7 +150,7 @@ class player():
 				#self.revertState()
 
 			# slows down animation for attack
-			if self.atkFrameSpeed % 90 == 0:
+			if self.atkFrameSpeed % 10 == 0:
 
 				# if finish attacking, reset to 0, end attack
 				if self.dir == 0:
@@ -196,18 +197,24 @@ class player():
 
 		elif self.state == 5: # hurt animations
 
-			if self.frameCount[self.state] >= 4: # hardcoded, hurt has 6 images
+			print("state is 5 is hurt frame: " + str(self.frameCount[self.state]))
+			if self.frameCount[self.state] >= 4: # hardcoded, hurt has 4 images
+				print("done hurt")
 				self.frameCount[self.state] = 0
 				self.is_hurt = False
 				self.dnd = False
+				self.revertState()
+				print("state should be 0 but is: " + str(self.state))
 
 			# only update to the next animation every 10th/integer moves
 			if self.hurtFrameSpeed % 90 == 0:
+				print("in the middle of hurt")
 				if self.dir == 0:
 					self.img = self.hurtImg[self.frameCount[self.state]]
 				elif self.dir == 1:
 					self.img = pygame.transform.flip(self.hurtImg[self.frameCount[self.state]], True, False)
 				self.frameCount[self.state]+=1
+				print("frame is now " + str(self.frameCount[self.state]))
 				self.hurtFrameSpeed += 0.1
 			else:
 				self.hurtFrameSpeed += 0.1

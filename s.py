@@ -128,13 +128,17 @@ def offset(mask1, mask2):
 	return int(mask2.posx - mask1.posx), int(mask2.posy - mask1.posy)
 
 
-def testCollision(p1,ai):
+def testCollision(p1,p2):
 
-	if p1.maskImg.overlap(ai.maskImg, offset(p1, ai)):
-		print("collision")
-	else:
-		print("no collision")
-
+	if(p1.is_attacking and not p2.is_hurt):
+		if p1.maskImg.overlap(p2.maskImg, offset(p1, p2)):
+			print("collision - setting previous state to: " + str(p2.state))
+			p2.prevState = p2.state
+			p2.state = 5
+			p2.is_hurt = True
+			p2.dnd = True
+		else:
+			print("no collision")
 
 def init_game():
 
