@@ -79,42 +79,6 @@ def checkKeys(p1):
 			p1.is_hurt = False
 			p1.revertState()
 
-	#print("no keys pressed, moving flag to false")
-
-	# elif keys[pygame.K_a]:
-	# 	p1.prevState = p1.state
-	# 	p1.state = 2
-	# 	p1.is_attacking = True
-	# 	p1.dnd = True
-	# 	p1.stopMovement()
-
-	# elif keys[pygame.K_j]:
-	# 	p1.prevState = p1.state
-	# 	p1.state = 3
-	# 	p1.is_jumping = True
-	# 	p1.dnd = True
-	# 	p1.stopMovement()
-
-	# elif event.type == pygame.KEYUP:
-
-	# 	if event.key == pygame.K_RIGHT:
-	# 		p1.moving_right = False
-	# 	elif event.key == pygame.K_LEFT:
-	# 		p1.moving_left = False
-	# 	elif event.key == pygame.K_UP:
-	# 		p1.moving_up = False
-	# 	elif event.key == pygame.K_DOWN:
-	# 		p1.moving_down = False
-	# 	elif event.key == pygame.K_a or event.key == pygame.K_j:
-	# 		p1.revertState()
-
-	# 	if not (p1.moving_down or p1.moving_up or p1.moving_left or p1.moving_right):
-	# 		p1.is_moving = False
-	# 		print("stop walking")
-	# 		p1.revertState()
-	# 		print("reverted")
-	# 		p1.movingDir()
-
 
 def orderObjectsAndBlit(objList):
 
