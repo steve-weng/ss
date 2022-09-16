@@ -150,11 +150,14 @@ def init_game():
 	bg = pygame.image.load("imgs/bg.png")
 	bg = pygame.transform.scale(bg, (1200,720))
 
+	p1hero = "knight"
+	p2hero = "mage"
+
 	objList = []
-	p1 = player(screen)
+	p1 = player(screen, p1hero)
 	objList.append(p1)
-	ai = player(screen)
-	objList.append(ai)
+	p2 = player(screen, p2hero)
+	objList.append(p2)
 
 	while True:
 		for event in pygame.event.get():
@@ -164,10 +167,10 @@ def init_game():
 		checkKeys(p1)
 
 		screen.blit(bg, (0,0))
-		ai.updateLoc()
+		p2.updateLoc()
 		p1.updateLoc()
 
-		testCollision(p1, ai)
+		testCollision(p1, p2)
 
 		orderObjectsAndBlit(objList)
 

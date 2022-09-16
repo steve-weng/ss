@@ -2,7 +2,7 @@ import pygame
 
 class player():
 	
-	def __init__(self, screen):
+	def __init__(self, screen, hero):
 
 		# screen rectangle size setup
 		self.screen = screen
@@ -14,7 +14,7 @@ class player():
 		self.jumpFrameSpeed = float(0.1)
 		self.hurtFrameSpeed = float(0.1)
 
-		self.idleImg = pygame.image.load('imgs/knight.png')
+		self.idleImg = pygame.image.load('imgs/' + hero + '/' + hero + '.png')
 		# holds current image, default is the idle
 		self.img = self.idleImg
 		self.maskImg = pygame.mask.from_surface(self.img)
@@ -29,22 +29,22 @@ class player():
 		# loading in walking animation
 		self.walkImg = []
 		for i in range(1, 7): # 6 frames
-			self.loadImg = pygame.image.load('imgs/walk2/walk' + str(i) + '.png')
+			self.loadImg = pygame.image.load('imgs/' + hero + '/walk/walk' + str(i) + '.png')
 			self.walkImg.append(self.loadImg)
 
 		self.atkImg = []
 		for i in range(1, 6):
-			self.loadImg = pygame.image.load('imgs/attack/attack' + str(i) + '.png')
+			self.loadImg = pygame.image.load('imgs/' + hero + '/attack/attack' + str(i) + '.png')
 			self.atkImg.append(self.loadImg)
 
 		self.jumpImg = []
 		for i in range(1, 8):
-			self.loadImg = pygame.image.load('imgs/jump/jump' + str(i) + '.png')
+			self.loadImg = pygame.image.load('imgs/' + hero + '/jump/jump' + str(i) + '.png')
 			self.jumpImg.append(self.loadImg)		
 
 		self.hurtImg = []
 		for i in range(1, 5):
-			self.loadImg = pygame.image.load('imgs/hurt/hurt' + str(i) + '.png')
+			self.loadImg = pygame.image.load('imgs/' + hero + '/hurt/hurt' + str(i) + '.png')
 			self.hurtImg.append(self.loadImg)		
 
 		# default sprite rectangular size
@@ -207,7 +207,7 @@ class player():
 				print("state should be 0 but is: " + str(self.state))
 
 			# only update to the next animation every 10th/integer moves
-			if self.hurtFrameSpeed % 90 == 0:
+			if self.hurtFrameSpeed % 10 == 0:
 				print("in the middle of hurt")
 				if self.dir == 0:
 					self.img = self.hurtImg[self.frameCount[self.state]]
