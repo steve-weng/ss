@@ -1,6 +1,6 @@
 import pygame
 import sys
-from player import player
+from player import *
 
 def checkKeys(p1):
 
@@ -113,14 +113,17 @@ def init_game():
 	bg = pygame.image.load("imgs/bg.png")
 	bg = pygame.transform.scale(bg, (1200,720))
 
-	p1hero = "knight"
-	p2hero = "mage"
+	p1Hero = "dragon"
+	p2Hero = "mage"
+	enemyHero = "dragon"
 
 	objList = []
-	p1 = player(screen, p1hero)
+	p1 = player(screen, p1Hero)
 	objList.append(p1)
-	p2 = player(screen, p2hero)
+	p2 = player(screen, p2Hero)
 	objList.append(p2)
+	d1 = dragon(screen, enemyHero)
+	objList.append(d1)
 
 	while True:
 		for event in pygame.event.get():

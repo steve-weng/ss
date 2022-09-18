@@ -8,6 +8,8 @@ class player():
 		self.hero = hero
 		self.settings = settings()
 
+		self.atkRange = None
+
 		# screen rectangle size setup
 		self.screen = screen
 		self.screen_rect = screen.get_rect()
@@ -23,6 +25,8 @@ class player():
 		self.jumpImg = []
 		self.hurtImg = []
 
+		# num of frames for each animation for each hero
+		self.numFrames = self.settings.frames(self.hero)
 		self.loadImgs()
 
 		# holds current image, default is the idle
@@ -73,27 +77,26 @@ class player():
 
 		self.idleImg = pygame.image.load('imgs/' + self.hero + '/' + self.hero + '.png')
 
-		numFrames = self.settings.frames(self.hero)
-
 		# loading in walking animation
-		for i in range(1, numFrames[0] + 1): # 6 frames
+		for i in range(1, self.numFrames[0] + 1):
 			self.loadImg = pygame.image.load('imgs/' + self.hero + '/walk/walk' + str(i) + '.png')
 			self.walkImg.append(self.loadImg)
 
 		# attack
-		for i in range(1, numFrames[1] + 1):
+		for i in range(1, self.numFrames[1] + 1):
 			self.loadImg = pygame.image.load('imgs/' + self.hero + '/attack/attack' + str(i) + '.png')
 			self.atkImg.append(self.loadImg)
 
-		# jump
-		for i in range(1, numFrames[2] + 1):
-			self.loadImg = pygame.image.load('imgs/' + self.hero + '/jump/jump' + str(i) + '.png')
-			self.jumpImg.append(self.loadImg)		
+		if self.hero != "dragon":
+			# jump
+			for i in range(1, self.numFrames[2] + 1):
+				self.loadImg = pygame.image.load('imgs/' + self.hero + '/jump/jump' + str(i) + '.png')
+				self.jumpImg.append(self.loadImg)		
 
 		# empty jump attack
 
 		# hurt
-		for i in range(1, numFrames[4] + 1):
+		for i in range(1, self.numFrames[4] + 1):
 			self.loadImg = pygame.image.load('imgs/' + self.hero + '/hurt/hurt' + str(i) + '.png')
 			self.hurtImg.append(self.loadImg)
 
@@ -124,7 +127,7 @@ class player():
 
 		elif self.state == 1: # walking animations
 
-			if self.frameCount[self.state] >= 6: # hardcoded, walk has 6 images
+			if self.frameCount[self.state] >= self.numFrames[0]: # when it reaches last animation
 				self.frameCount[self.state] = 0
 
 			# only update to the next animation every 10th/integer moves
@@ -138,7 +141,7 @@ class player():
 
 		elif self.state == 2: # attack animation
 
-			if self.frameCount[self.state] >= 5: # hardcoded, attack has 5 images
+			if self.frameCount[self.state] >= self.numFrames[1]:
 				self.frameCount[self.state] = 0
 				self.is_attacking = False
 				self.dnd = False
@@ -161,7 +164,7 @@ class player():
 		elif self.state == 3: # jump animation
 
 			# reset frames to 0 if we're at the last animation
-			if self.frameCount[self.state] >= 7: # hardcoded, jump has 7 images
+			if self.frameCount[self.state] >= self.numFrames[2]:
 				self.frameCount[self.state] = 0
 				self.is_jumping = False
 				self.dnd = False	
@@ -187,7 +190,7 @@ class player():
 
 		elif self.state == 5: # hurt animations
 
-			if self.frameCount[self.state] >= 4: # hardcoded, hurt has 4 images
+			if self.frameCount[self.state] >= self.numFrames[4]: # hardcoded, hurt has 4 images
 				self.frameCount[self.state] = 0
 				self.is_hurt = False
 				self.dnd = False
@@ -243,3 +246,11 @@ class player():
 #class knight(player):
 
 #	def __init__(self, screen):
+
+class dragon(player):
+
+	def __init__(self, screen, hero):
+		super().__init__(screen, hero)
+		self.atkRange = 300
+		self.rect.centerx = self.screen_rect.centerx - 100
+		self.bottom = self.screen_rect.bottom - 500
