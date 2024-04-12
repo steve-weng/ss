@@ -91,6 +91,11 @@ def orderObjectsAndBlit(objList):
 def offset(mask1, mask2):
 	return int(mask2.posx - mask1.posx), int(mask2.posy - mask1.posy)
 
+def checkObjHealth(objList):
+	for i, obj in enumerate(objList):
+		if (obj.hp <= 0):
+			print("deleting")
+			del objList[i]
 
 def testCollision(p1,p2):
 
@@ -100,8 +105,7 @@ def testCollision(p1,p2):
 			p2.state = 5
 			p2.is_hurt = True
 			p2.dnd = True
-	#	else:
-	#		print("no collision")
+			p2.processDamage(50)
 
 def init_game():
 
@@ -138,7 +142,8 @@ def init_game():
 		d1.updateLoc()
 
 		testCollision(p1, d1)
-
+		checkObjHealth(objList)
+	
 		orderObjectsAndBlit(objList)
 
 		pygame.display.flip()

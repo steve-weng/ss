@@ -113,6 +113,13 @@ class player():
 		else:
 			self.is_moving = False
 
+	
+	def processDamage(self, dmg):
+		self.hp = self.hp - dmg
+		print("took " + str(dmg) +" dmg, " + str(self.hp) + "hp left")
+		if (self.hp <= 0):
+			self.is_dead = True
+
 
 	def updateAnimationInt(self):
 
@@ -253,8 +260,8 @@ class dragon(player):
 		super().__init__(screen, hero)
 		self.atkRange = 300
 		# where to place initial default sprite on the screen
-		self.rect.centerx = self.screen_rect.centerx - 100
-		self.rect.bottom = self.screen_rect.bottom - 500
+		self.rect.centerx = self.screen_rect.centerx - 300
+		self.rect.bottom = self.screen_rect.bottom - 300
 
 		# holds current position
 		self.posx = self.rect.centerx + 0.1
