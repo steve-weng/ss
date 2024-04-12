@@ -40,7 +40,7 @@ class player():
 		self.rect.centerx = self.screen_rect.centerx - 500
 		self.rect.bottom = self.screen_rect.bottom - 200
 
-		# holds current position
+		# holds current position, the 0.1 is a temp solution for flickering animations
 		self.posx = self.rect.centerx + 0.1
 		self.posy = self.rect.bottom + 0.1	
 
@@ -252,5 +252,10 @@ class dragon(player):
 	def __init__(self, screen, hero):
 		super().__init__(screen, hero)
 		self.atkRange = 300
+		# where to place initial default sprite on the screen
 		self.rect.centerx = self.screen_rect.centerx - 100
-		self.bottom = self.screen_rect.bottom - 500
+		self.rect.bottom = self.screen_rect.bottom - 500
+
+		# holds current position
+		self.posx = self.rect.centerx + 0.1
+		self.posy = self.rect.bottom + 0.1	
