@@ -121,6 +121,7 @@ def init_game():
 	#p2Hero = "mage"
 	enemyHero = "dragon"
 
+	# initialize original objects
 	objList = []
 	p1 = player(screen, p1Hero)
 	objList.append(p1)
@@ -129,6 +130,7 @@ def init_game():
 	d1 = dragon(screen, enemyHero)
 	objList.append(d1)
 
+	# game loop
 	while True:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -139,6 +141,8 @@ def init_game():
 		screen.blit(bg, (0,0))
 		#p2.updateLoc()
 		p1.updateLoc()
+		pInfo = (p1.posx, p1.posy, p1.hp)
+		d1.AIMove(pInfo)
 		d1.updateLoc()
 
 		testCollision(p1, d1)

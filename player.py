@@ -258,11 +258,27 @@ class dragon(player):
 
 	def __init__(self, screen, hero):
 		super().__init__(screen, hero)
-		self.atkRange = 300
+		self.atkRange = 50
 		# where to place initial default sprite on the screen
 		self.rect.centerx = self.screen_rect.centerx - 300
 		self.rect.bottom = self.screen_rect.bottom - 300
 
 		# holds current position
 		self.posx = self.rect.centerx + 0.1
-		self.posy = self.rect.bottom + 0.1	
+		self.posy = self.rect.bottom + 0.1
+		
+
+	# move ai until in attacak range of player position
+	# each turn, check if in range, if so, attack
+	def AIMove(self, p1):
+
+		# move closer to player
+		if (self.posx + 10 < p1[0]):
+			self.posx += 0.1
+		elif (self.posx - 10 > p1[0]):
+			self.posx -= 0.1
+		
+		if (self.posy + 10 < p1[1]):
+			self.posy += 0.1
+		elif (self.posy - 10 > p1[1]):
+			self.posy -= 0.1
