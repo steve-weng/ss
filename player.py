@@ -282,3 +282,14 @@ class dragon(player):
 			self.posy += 0.1
 		elif (self.posy - 10 > p1[1]):
 			self.posy -= 0.1
+
+		# if ai is within its attack range of player, attack
+		if (self.posy < p1[1] < self.posy + 50):
+			if (self.dir == 0): # facing right	
+				if (self.posx < p1[0] < self.posx + self.atkRange):
+					self.is_attacking = True
+					print ("we attack!!!")
+			elif (self.dir == 1):
+				if (self.posx > p1[0] > self.posx - self.atkRange):
+					self.is_attacking = True
+					print ("we attack!!!")

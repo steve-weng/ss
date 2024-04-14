@@ -145,7 +145,9 @@ def init_game():
 		d1.AIMove(pInfo)
 		d1.updateLoc()
 
-		testCollision(p1, d1)
+		#testCollision(p1, d1)
+		
+		testCollision(d1, p1)
 		checkObjHealth(objList)
 	
 		orderObjectsAndBlit(objList)
