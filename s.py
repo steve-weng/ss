@@ -141,14 +141,17 @@ def init_game():
 		screen.blit(bg, (0,0))
 		#p2.updateLoc()
 		p1.updateLoc()
-		pInfo = (p1.posx, p1.posy, p1.hp)
+		if (p1.hp > 0):
+			pInfo = (p1.posx, p1.posy, p1.hp)
+
 		d1.AIMove(pInfo)
 		d1.updateLoc()
 
 		#testCollision(p1, d1)
-		
+
 		testCollision(d1, p1)
 		checkObjHealth(objList)
+		print(objList)
 	
 		orderObjectsAndBlit(objList)
 

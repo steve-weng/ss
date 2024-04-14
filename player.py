@@ -275,21 +275,37 @@ class dragon(player):
 		# move closer to player
 		if (self.posx + 10 < p1[0]):
 			self.posx += 0.1
+			self.is_moving = True
+			self.moving_right = True
+			self.state = 1
+			self.dir = 0
+			#self.moving_left = False
 		elif (self.posx - 10 > p1[0]):
 			self.posx -= 0.1
+			self.is_moving = True
+			self.moving_left = True
+			self.state = 1
+			self.dir = 1
+			#self.moving_right = False
 		
 		if (self.posy + 10 < p1[1]):
 			self.posy += 0.1
+			self.is_moving = True
+			self.moving_down = True
+			self.state = 1
+			#self.moving_up = False
 		elif (self.posy - 10 > p1[1]):
 			self.posy -= 0.1
+			self.is_moving = True
+			self.moving_up = True
+			self.state = 1
+			#self.moving_down = False
 
 		# if ai is within its attack range of player, attack
 		if (self.posy < p1[1] < self.posy + 50):
 			if (self.dir == 0): # facing right	
 				if (self.posx < p1[0] < self.posx + self.atkRange):
 					self.is_attacking = True
-					print ("we attack!!!")
 			elif (self.dir == 1):
 				if (self.posx > p1[0] > self.posx - self.atkRange):
 					self.is_attacking = True
-					print ("we attack!!!")
