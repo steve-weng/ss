@@ -260,13 +260,22 @@ class fireBlastObj(player):
 	def __init__(self, screen, hero, p1):
 		super().__init__(screen, hero)
 
+		self.hero = hero
 		self.rect.centerx = p1.rect.centerx - 30
 		self.rect.bottom = p1.rect.bottom - 30
 
 		# holds current position
 		self.posx = self.rect.centerx + 0.1
 		self.posy = self.rect.bottom + 0.1
+		self.hp = 100
+		self.dir = p1.dir
+		print ("initialized")
 
+	def move(self):
+		if (self.dir == 0):
+			self.posx = self.posx + 0.5
+		else:
+			self.posx = self.posx - 0.5
 
 
 class dragon(player):
@@ -292,7 +301,7 @@ class dragon(player):
 
 	# move ai until in attack range of player position
 	# each turn, check if in range, if so, attack
-	def AIMove(self, p1):
+	def move(self, p1):
 
 		# move closer to player
 		if (self.posx + 10 < p1[0]):

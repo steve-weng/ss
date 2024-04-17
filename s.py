@@ -72,7 +72,6 @@ def checkKeys(p1, screen):
 
 	# hurt
 	if keys[pygame.K_h]:
-		print("hurt key")
 		p1.is_hurt = True
 		p1.dnd = True
 		p1.prevState = p1.state
@@ -154,6 +153,11 @@ def init_game():
 
 		#d1.AIMove(pInfo)
 		d1.updateLoc()
+
+		if (len(objList) >= 3):
+			for a in objList:
+				if (a.hero == "fireBlastObj"):
+					a.move()
 
 		#testCollision(p1, d1)
 
