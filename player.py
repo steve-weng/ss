@@ -254,6 +254,21 @@ class player():
 
 #	def __init__(self, screen):
 
+# fire blast object
+class fireBlastObj(player):
+
+	def __init__(self, screen, hero):
+		super().__init__(screen, hero)
+
+		self.rect.centerx = self.screen_rect.centerx - 300
+		self.rect.bottom = self.screen_rect.bottom - 300
+
+		# holds current position
+		self.posx = self.rect.centerx + 0.1
+		self.posy = self.rect.bottom + 0.1
+
+
+
 class dragon(player):
 
 	def __init__(self, screen, hero):
@@ -268,7 +283,14 @@ class dragon(player):
 		self.posy = self.rect.bottom + 0.1
 		
 
-	# move ai until in attacak range of player position
+	# trying to create dragon blast attack, has to be another obj
+	#def fireBlast(self):
+		# later add in checks for range (when blast/when melee)
+		# attack animation already loaded, but this adds the
+		# fire blast obj img, and obj returned
+
+
+	# move ai until in attack range of player position
 	# each turn, check if in range, if so, attack
 	def AIMove(self, p1):
 

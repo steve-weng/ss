@@ -3,7 +3,7 @@ import sys
 from player import *
 from pygame import gfxdraw
 
-def checkKeys(p1):
+def checkKeys(p1, screen):
 
 	if p1.dnd:
 		return
@@ -52,6 +52,8 @@ def checkKeys(p1):
 		p1.prevState = p1.state # save current state to return to after attack
 		p1.state = 2
 		p1.dnd = True
+		#p1.fireBlast()
+		return fireBlastObj(screen, "fireBlastObj");
 	else:
 		if p1.state == 2:
 			p1.is_attacking = False
@@ -79,6 +81,8 @@ def checkKeys(p1):
 		if p1.state == 5:
 			p1.is_hurt = False
 			p1.revertState()
+
+	return None
 
 
 def orderObjectsAndBlit(objList):
@@ -137,7 +141,10 @@ def init_game():
 			if event.type == pygame.QUIT:
 				sys.exit()
 		
-		checkKeys(p1)
+		newObj = checkKeys(p1, screen)
+		if (newObj!= None): # if we need to add a new attack obj (e.g., fire blast)
+			objList.append(newObj)
+			newObj = None
 
 		screen.blit(bg, (0,0))
 		#p2.updateLoc()

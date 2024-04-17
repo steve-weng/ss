@@ -18,3 +18,6 @@ class settings():
 
 		elif character == "dragon":
 			return [5, 4, 0, 0, 2, 5] # dragon doesn't have jump
+		
+		elif character == "fireBlastObj":
+			return [0, 0, 0, 0, 0, 0]
