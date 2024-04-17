@@ -261,8 +261,8 @@ class fireBlastObj(player):
 		super().__init__(screen, hero)
 
 		self.hero = hero
-		self.rect.centerx = p1.rect.centerx - 30
-		self.rect.bottom = p1.rect.bottom - 30
+		self.rect.centerx = p1.rect.centerx
+		self.rect.bottom = p1.rect.bottom
 
 		# holds current position
 		self.posx = self.rect.centerx + 0.1
@@ -276,6 +276,11 @@ class fireBlastObj(player):
 			self.posx = self.posx + 0.5
 		else:
 			self.posx = self.posx - 0.5
+
+		# change hp to 0 to del if outside of screen
+		if (self.posx > pygame.display.get_window_size()[0]
+	  		or self.posx < 0):
+			self.hp = 0
 
 
 class dragon(player):

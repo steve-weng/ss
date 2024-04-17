@@ -163,7 +163,6 @@ def init_game():
 
 		testCollision(d1, p1)
 		checkObjHealth(objList)
-	
 		orderObjectsAndBlit(objList)
 		pygame.display.flip()
 
