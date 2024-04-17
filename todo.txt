@@ -1,0 +1,1 @@
+dragonsprite - need empty space/height on top of them all for attacks

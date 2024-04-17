@@ -16,6 +16,5 @@ class settings():
 		elif character == "mage":
 			return [6, 7, 7, 0, 4, 10]
 
-
 		elif character == "dragon":
 			return [5, 4, 0, 0, 2, 5] # dragon doesn't have jump

@@ -1,6 +1,7 @@
 import pygame
 import sys
 from player import *
+from pygame import gfxdraw
 
 def checkKeys(p1):
 
@@ -117,7 +118,7 @@ def init_game():
 	bg = pygame.image.load("imgs/bg.png")
 	bg = pygame.transform.scale(bg, (1200,720))
 
-	p1Hero = "knight"
+	p1Hero = "dragon"
 	#p2Hero = "mage"
 	enemyHero = "dragon"
 
@@ -144,17 +145,15 @@ def init_game():
 		if (p1.hp > 0):
 			pInfo = (p1.posx, p1.posy, p1.hp)
 
-		d1.AIMove(pInfo)
+		#d1.AIMove(pInfo)
 		d1.updateLoc()
 
 		#testCollision(p1, d1)
 
 		testCollision(d1, p1)
 		checkObjHealth(objList)
-		print(objList)
 	
 		orderObjectsAndBlit(objList)
-
 		pygame.display.flip()
 
 
