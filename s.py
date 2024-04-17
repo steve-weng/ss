@@ -53,7 +53,7 @@ def checkKeys(p1, screen):
 		p1.state = 2
 		p1.dnd = True
 		#p1.fireBlast()
-		return fireBlastObj(screen, "fireBlastObj");
+		return fireBlastObj(screen, "fireBlastObj", p1);
 	else:
 		if p1.state == 2:
 			p1.is_attacking = False

@@ -257,11 +257,11 @@ class player():
 # fire blast object
 class fireBlastObj(player):
 
-	def __init__(self, screen, hero):
+	def __init__(self, screen, hero, p1):
 		super().__init__(screen, hero)
 
-		self.rect.centerx = self.screen_rect.centerx - 300
-		self.rect.bottom = self.screen_rect.bottom - 300
+		self.rect.centerx = p1.rect.centerx - 30
+		self.rect.bottom = p1.rect.bottom - 30
 
 		# holds current position
 		self.posx = self.rect.centerx + 0.1
