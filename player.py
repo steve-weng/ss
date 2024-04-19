@@ -9,7 +9,7 @@ class player():
 		self.settings = settings()
 
 		self.atkRange = None
-
+		self.owner = None # atk objects have owner to not dmg them
 		# screen rectangle size setup
 		self.screen = screen
 		self.screen_rect = screen.get_rect()
@@ -221,7 +221,8 @@ class player():
 
 	def blitChar(self):
 
-		self.updateAnimationInt()
+		if (self.owner == None):
+			self.updateAnimationInt() # we dont update animations for atk objs
 
 		# sets current sprite location to where its position is updated to
 		self.rect.centerx = self.posx
@@ -261,15 +262,20 @@ class fireBlastObj(player):
 		super().__init__(screen, hero)
 
 		self.hero = hero
+		self.owner = p1
+
 		self.rect.centerx = p1.rect.centerx
 		self.rect.bottom = p1.rect.bottom
 
 		# holds current position
 		self.posx = self.rect.centerx + 0.1
 		self.posy = self.rect.bottom + 0.1
-		self.hp = 100
+		self.hp = 100000 # fireball "dies" upon collision
 		self.dir = p1.dir
-		print ("initialized")
+		self.is_attacking = True #att objs are always dmg on
+		self.dnd = True
+		#self.state = 2 #att state
+		
 
 	def move(self):
 		if (self.dir == 0):

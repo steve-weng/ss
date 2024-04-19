@@ -104,12 +104,17 @@ def checkObjHealth(objList):
 def testCollision(p1,p2):
 
 	if(p1.is_attacking and not p2.is_hurt):
-		if p1.maskImg.overlap(p2.maskImg, offset(p1, p2)):
+		if p1.maskImg.overlap(p2.maskImg, offset(p1, p2)) and p1.owner != p2:
 			p2.prevState = p2.state
 			p2.state = 5
 			p2.is_hurt = True
 			p2.dnd = True
+			print (p1)
+			print (p2)
+			print(str(p1.owner) + (' owner'))
 			p2.processDamage(50)
+			if (p1.owner != None):
+				p1.hp = 0
 
 def init_game():
 
@@ -160,8 +165,12 @@ def init_game():
 					a.move()
 
 		#testCollision(p1, d1)
+		for i in objList:
+			for j in objList:
+				if (i != j): # we dont want to test collision between same obj/player
+					testCollision(i, j)
 
-		testCollision(d1, p1)
+		#testCollision(d1, p1)
 		checkObjHealth(objList)
 		orderObjectsAndBlit(objList)
 		pygame.display.flip()
