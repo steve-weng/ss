@@ -19,6 +19,7 @@ class player():
 		self.atkFrameSpeed = float(0.1)
 		self.jumpFrameSpeed = float(0.1)
 		self.hurtFrameSpeed = float(0.1)
+		self.deathFrameSpeed = float(0.1)
 
 		self.walkImg = []
 		self.atkImg = []
@@ -221,12 +222,21 @@ class player():
 				self.hurtFrameSpeed = round(self.hurtFrameSpeed, 1)
 
 		elif self.state == 6: # dying animations
-
+			
 			# if the character's death animation is done then delete it, it's dead
 			if self.frameCount[self.state] >= self.numFrames[self.state - 1]:
 				self.state = 7
 			else:
-				self.frameCount[self.state]+=1
+				if self.deathFrameSpeed % 7 == 0:
+					if self.dir == 0:
+						self.img = self.deathImg[self.frameCount[self.state]]
+					elif self.dir == 1:
+						self.img = pygame.transform.flip(self.deathImg[self.frameCount[self.state]], True, False)
+					self.frameCount[self.state]+=1
+					self.deathFrameSpeed += 0.1
+				else:
+					self.deathFrameSpeed += 0.1
+					self.deathFrameSpeed = round(self.deathFrameSpeed, 1)
 		
 		# set the new mask image for collision detection
 		self.maskImg = pygame.mask.from_surface(self.img)

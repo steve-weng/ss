@@ -100,10 +100,8 @@ def checkObjHealth(objList):
 	for i, obj in enumerate(objList):
 		if (obj.hp <= 0):
 			if (obj.state == 7):
-				print("deleting something")
 				del objList[i]
 			else:
-				print("dying animation!")
 				obj.state = 6
 
 def testCollision(p1,p2):
