@@ -53,7 +53,8 @@ def checkKeys(p1, screen):
 		p1.state = 2
 		p1.dnd = True
 		#p1.fireBlast()
-		return fireBlastObj(screen, "fireBlastObj", p1);
+		if (p1.hero == "dragon"):
+			return fireBlastObj(screen, "fireBlastObj", p1);
 	else:
 		if p1.state == 2:
 			p1.is_attacking = False
@@ -98,8 +99,12 @@ def offset(mask1, mask2):
 def checkObjHealth(objList):
 	for i, obj in enumerate(objList):
 		if (obj.hp <= 0):
-			print("deleting")
-			del objList[i]
+			if (obj.state == 7):
+				print("deleting something")
+				del objList[i]
+			else:
+				print("dying animation!")
+				obj.state = 6
 
 def testCollision(p1,p2):
 
@@ -109,11 +114,9 @@ def testCollision(p1,p2):
 			p2.state = 5
 			p2.is_hurt = True
 			p2.dnd = True
-			print (p1)
-			print (p2)
-			print(str(p1.owner) + (' owner'))
 			p2.processDamage(50)
 			if (p1.owner != None):
+				print ("del")
 				p1.hp = 0
 
 def init_game():
@@ -126,9 +129,9 @@ def init_game():
 	bg = pygame.image.load("imgs/bg.png")
 	bg = pygame.transform.scale(bg, (1200,720))
 
-	p1Hero = "dragon"
+	p1Hero = "knight"
 	#p2Hero = "mage"
-	enemyHero = "dragon"
+	enemyHero = "knight"
 
 	# initialize original objects
 	objList = []

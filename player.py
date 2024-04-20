@@ -24,6 +24,7 @@ class player():
 		self.atkImg = []
 		self.jumpImg = []
 		self.hurtImg = []
+		self.deathImg = []
 
 		# num of frames for each animation for each hero
 		self.numFrames = self.settings.frames(self.hero)
@@ -65,7 +66,8 @@ class player():
 		self.moving_down = False
 
 		# holds current state
-		# 0 = idle, 1 = walk, 2 = attack, 3 = jump, 4 = jump attack, 5 = hurt, 6 = dead
+		# 0 = idle, 1 = walk, 2 = attack, 3 = jump, 4 = jump attack,
+  		# 5 = hurt, 6 = dead and animating, 7 = dead and can delete
 		self.state = 0
 
 		# previous state to revert to when needed
@@ -100,7 +102,10 @@ class player():
 			self.loadImg = pygame.image.load('imgs/' + self.hero + '/hurt/hurt' + str(i) + '.png')
 			self.hurtImg.append(self.loadImg)
 
-		# empty dead
+		# dead
+		for i in range(1, self.numFrames[5] + 1):
+			self.loadImg = pygame.image.load('imgs/' + self.hero + '/death/death' + str(i) + '.png')
+			self.deathImg.append(self.loadImg)
 
 
 	# after jump, attack, hurt, determine if char should be idle or walking
@@ -197,7 +202,7 @@ class player():
 
 		elif self.state == 5: # hurt animations
 
-			if self.frameCount[self.state] >= self.numFrames[4]: # hardcoded, hurt has 4 images
+			if self.frameCount[self.state] >= self.numFrames[self.state - 1]: 
 				self.frameCount[self.state] = 0
 				self.is_hurt = False
 				self.dnd = False
@@ -215,6 +220,14 @@ class player():
 				self.hurtFrameSpeed += 0.1
 				self.hurtFrameSpeed = round(self.hurtFrameSpeed, 1)
 
+		elif self.state == 6: # dying animations
+
+			# if the character's death animation is done then delete it, it's dead
+			if self.frameCount[self.state] >= self.numFrames[self.state - 1]:
+				self.state = 7
+			else:
+				self.frameCount[self.state]+=1
+		
 		# set the new mask image for collision detection
 		self.maskImg = pygame.mask.from_surface(self.img)
 
